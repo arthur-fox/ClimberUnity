@@ -108,7 +108,7 @@ public class EffectsManager : MonoBehaviour {
 			playerHeight = m_player.transform.position.y;
 		}
 		
-		const float kMaxHeight = 5;
+		const float kMaxHeight = 5; //TODO: Do not hardcode this stuff
 		const float kMinHeight = -5;
 		const float kMaxSaturation = 1.25f;
 		const float kMinSaturation = 0.0f;

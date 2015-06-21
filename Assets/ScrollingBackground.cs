@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ScrollingBackground : MonoBehaviour {
-
+public class ScrollingBackground : MonoBehaviour 
+{
 	const float kHeight = 13.66f; // TODO: Don't just have this as a Magic number based on height of sprites
 
 	public float m_speed = 1.0f;

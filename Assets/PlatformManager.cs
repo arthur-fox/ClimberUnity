@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class PlatformManager : MonoBehaviour {
 
 	public Camera m_gameCamera;
-	public GameObject[] m_platforms;
+	public GameObject[] m_platformPrefabs;
 	public float m_platformGap = 2.0f;
 	public float m_currSpeed = 2.0f;
 
@@ -39,7 +39,10 @@ public class PlatformManager : MonoBehaviour {
 	{
 		Random.seed = (int) Time.time;
 		m_activePlatforms = new List<GameObject> ();
+	}
 
+	void Start()
+	{
 		Vector3 leftCornerPos = m_gameCamera.ViewportToWorldPoint( new Vector3( 1.0f, 1.0f, m_gameCamera.nearClipPlane) );
 		//m_levelWidth = leftCornerPos.x * 2.0f;
 		m_levelHeight = leftCornerPos.y * 2.0f; 
@@ -52,7 +55,7 @@ public class PlatformManager : MonoBehaviour {
 			Transform platTransform = m_activePlatforms [m_activePlatforms.Count-1].GetComponent<Transform> ();
 			if (platTransform.position.y < (m_levelHeight/2.0f - m_platformGap) )
 			{
-				int prefabNum = Random.Range(0, m_platforms.Length);	
+				int prefabNum = Random.Range(0, m_platformPrefabs.Length);	
 				float xOffset = CalcRandomXOffset();
 				CreatePlatform(prefabNum, xOffset);
 			}
@@ -105,7 +108,7 @@ public class PlatformManager : MonoBehaviour {
 	void CreatePlatform(int prefabNum, float xOffset)
 	{	
 		Vector3 position = m_gameCamera.ViewportToWorldPoint( new Vector3( xOffset, 1.0f, m_gameCamera.nearClipPlane) );
-		GameObject platformObject = (GameObject) Instantiate(m_platforms[prefabNum], position, Quaternion.identity);
+		GameObject platformObject = (GameObject) Instantiate(m_platformPrefabs[prefabNum], position, Quaternion.identity);
 
 		Platform platform = platformObject.GetComponent<Platform>();
 		platform.m_speed = m_currSpeed;

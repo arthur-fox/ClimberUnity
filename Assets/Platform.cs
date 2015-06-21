@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Platform : MonoBehaviour {
-
+public class Platform : MonoBehaviour 
+{
 	public float m_speed = 1;
 
 	void FixedUpdate () 

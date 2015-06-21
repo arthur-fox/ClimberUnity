@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EffectsManager : MonoBehaviour {
-
-	public GameObject m_gameCamera;
+public class EffectsManager : MonoBehaviour 
+{
 	public Player m_player;
+	public GameObject m_gameCameraEntity;
 	public GameObject m_clickMeParticlePrefab;
 
 	private enum PlayerInput
@@ -25,8 +25,8 @@ public class EffectsManager : MonoBehaviour {
 
 	void Start()
 	{
-		m_colourCorrection = m_gameCamera.GetComponent<UnityStandardAssets.ImageEffects.ColorCorrectionCurves> ();
-		m_overlay = m_gameCamera.GetComponent<UnityStandardAssets.ImageEffects.ScreenOverlay>();
+		m_colourCorrection = m_gameCameraEntity.GetComponent<UnityStandardAssets.ImageEffects.ColorCorrectionCurves> ();
+		m_overlay = m_gameCameraEntity.GetComponent<UnityStandardAssets.ImageEffects.ScreenOverlay>();
 	}
 
 	void FixedUpdate () 

@@ -12,8 +12,8 @@ public class Player : MonoBehaviour
 	public float m_jumpAmount = 8.0f;
 	public float m_strafeSensitivity = 50.0f;
 	public float m_strafeResistance = 10.0f;
-	public float m_gravityIncDampener = 0.5f;  // NOTE: This is just a tweakable magic number
-	public float m_jumpIncDampener = 0.1f;  // NOTE: This is just a tweakable magic number
+	public float m_gravityIncDampener = 0.5f; // NOTE: This is just a tweakable magic number
+	public float m_jumpIncDampener = 0.1f; // NOTE: This is just a tweakable magic number
 
 	private Platform m_onPlatform = null;
 	private float m_levelWidth = 0.0f;

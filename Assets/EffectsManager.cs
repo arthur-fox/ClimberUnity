@@ -111,7 +111,7 @@ public class EffectsManager : MonoBehaviour {
 		const float kMaxHeight = 5;
 		const float kMinHeight = -5;
 		const float kMaxSaturation = 1.25f;
-		const float kMinSaturation = 0.25f;
+		const float kMinSaturation = 0.0f;
 		
 		float heightRange = kMaxHeight - kMinHeight;
 		float normalisedHeight = (playerHeight - kMinHeight) / heightRange;

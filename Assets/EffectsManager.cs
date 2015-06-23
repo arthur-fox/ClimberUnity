@@ -89,12 +89,12 @@ public class EffectsManager : MonoBehaviour
 		{
 			if (m_playerInput == PlayerInput.kPlayerNotPressedLeft)
 			{
-				Vector3 position = new Vector3(-1.3f, 0.0f, 0.0f);
+				Vector3 position = new Vector3(-1.3f, 0.0f, -0.5f);
 				m_clickParticle = (GameObject) Instantiate(m_clickMeParticlePrefab, position, Quaternion.identity);
 			}
 			else if (m_playerInput == PlayerInput.kPlayerNotPressedRight)
 			{
-				Vector3 position = new Vector3(1.3f, 0.0f, 0.0f);
+				Vector3 position = new Vector3(1.3f, 0.0f, -0.5f);
 				m_clickParticle = (GameObject) Instantiate (m_clickMeParticlePrefab, position, Quaternion.identity);
 			}
 		}

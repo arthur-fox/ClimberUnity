@@ -35,6 +35,12 @@ public class PlatformManager : MonoBehaviour {
 		}
 	}
 
+	void OnDestroy()
+	{
+		Reset (0.0f);
+		m_activePlatforms = null;
+	}
+
 	void Awake()
 	{
 		Random.seed = (int) Time.time;

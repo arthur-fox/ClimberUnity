@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
 	public GameObject m_gameCameraEntity; //TODO: Make this tidier, shouldn't have GameObject and Camera...
 	public Camera m_gameCamera;
 	public BackgroundManager m_backgroundManager;
+	public Text m_highScoreText;
 	public Text m_scoreText;
 	public GameObject m_playerPrefab;	
 	public GameObject m_platformManagerPrefab;
@@ -23,9 +24,16 @@ public class LevelManager : MonoBehaviour
 	private float m_nextSpeedIncThresh = 10.0f;
 	private float m_timer = 0.0f;
 	private float m_currSpeed = 0;
+	private int m_currHighScore = 0;
 
 	public void GameOver()
 	{
+		if ((int)m_timer > m_currHighScore) 
+		{
+			m_currHighScore = (int)m_timer;
+			m_highScoreText.text = "" + m_currHighScore;
+		}
+
 		m_timer = 0;
 		m_currSpeed = m_initSpeed;
 
@@ -45,6 +53,17 @@ public class LevelManager : MonoBehaviour
 		m_gameCamera = gameCameraEntity.GetComponent<Camera>();
 	}
 
+	void OnDestroy()
+	{
+		m_highScoreText.text = "";
+		m_scoreText.text = "";
+		m_backgroundManager.SetSpeed(0.0f);
+		
+		Destroy (m_playerSpawnedEntity);
+		Destroy (m_platformManagerEntity);
+		Destroy (m_effectsManagerEntity);
+	}
+
 	void Start()
 	{
 		m_platformManagerEntity = (GameObject) Instantiate(m_platformManagerPrefab);
@@ -58,13 +77,6 @@ public class LevelManager : MonoBehaviour
 		m_nextSpeedIncThresh = m_speedIncGap;
 		m_currSpeed = m_initSpeed;
 		UpdateSpeed();
-	}
-
-	void OnDestroy()
-	{
-		Destroy (m_playerSpawnedEntity);
-		Destroy (m_platformManagerEntity);
-		Destroy (m_effectsManagerEntity);
 	}
 
 	void FixedUpdate () 

@@ -41,23 +41,23 @@ public class Player : MonoBehaviour
 
 	void FixedUpdate () 
 	{
-		UpdateJump ();
-		UpdateStrafe (); 
+		HandleJump ();
+		HandleStrafe (); 
 		UpdateState ();
 		UpdatePos ();
 	}
 
-	void UpdateJump()
+	void HandleJump()
 	{
 		m_yVel -= (kGravity * (1.0f + (m_currSpeed*m_gravityIncDampener))) * Time.fixedDeltaTime;
-		if (IsOnPlatform ()) 
+		if (IsOnGround ()) 
 		{
 			m_yVel = -m_onPlatform.m_speed;
 			m_yVel += m_jumpAmount * (1.0f + (m_currSpeed*m_jumpIncDampener) );
 		}
 	}
 
-	void UpdateStrafe()
+	void HandleStrafe()
 	{
 		bool touchLHS = false;
 		bool touchRHS = false;
@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
 		transform.position = new Vector2 (m_xPos, m_yPos);
 	}
 
-	bool IsOnPlatform()
+	bool IsOnGround()
 	{
 		return m_onPlatform != null;
 	}

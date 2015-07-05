@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using Soomla;
+using Soomla.Profile;
 
 public class GameDirector : MonoBehaviour 
 {
+	public Provider twitterProvider = Provider.TWITTER;
+	public string twitterMessage;
+
 	public GameObject m_gameCameraEntity;
 	public BackgroundManager m_backgroundManager;
 	public Button m_endLevelButton;
@@ -19,10 +24,18 @@ public class GameDirector : MonoBehaviour
 	private GameState m_gameState = GameState.kMainMenu;
 	private GameObject m_currLevelEntity = null;
 
-	public void QuitLevel()
+	public void OnQuitLevel()
 	{
 		if (m_currLevelEntity != null)
 		{
+			//TODO: Finish this - watch video https://youtu.be/S8I_gEMvDRE
+			if (SoomlaProfile.IsLoggedIn(twitterProvider))
+			{
+				if (GUI.Button())
+				{
+				}
+			}
+
 			Destroy (m_currLevelEntity);
 			m_currLevelEntity = null;
 		}
@@ -35,6 +48,8 @@ public class GameDirector : MonoBehaviour
 
 	void Start()
 	{
+		SoomlaProfile.Initialize ();
+
 		m_backgroundManager.SetSpeed (0.0f);
 		m_endLevelButton.gameObject.SetActive(false);
 	}

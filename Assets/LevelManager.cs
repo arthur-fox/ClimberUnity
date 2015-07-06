@@ -53,6 +53,11 @@ public class LevelManager : MonoBehaviour
 		m_gameCamera = gameCameraEntity.GetComponent<Camera>();
 	}
 
+	public int GetHighScore()
+	{
+		return m_currHighScore;
+	}
+
 	void OnDestroy()
 	{
 		m_highScoreText.text = "";

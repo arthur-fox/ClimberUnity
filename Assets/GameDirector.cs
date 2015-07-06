@@ -15,6 +15,8 @@ public class GameDirector : MonoBehaviour
 	public Text m_scoreText;
 	public Text m_highScoreText;
 	public GameObject m_levelManagerPrefab;
+
+	private int m_lastHighScore = 0;
 		
 	private enum GameState
 	{
@@ -24,20 +26,39 @@ public class GameDirector : MonoBehaviour
 	private GameState m_gameState = GameState.kMainMenu;
 	private GameObject m_currLevelEntity = null;
 
+	bool exitedLevel = false;
+
 	public void OnQuitLevel()
 	{
 		if (m_currLevelEntity != null)
-		{
-			//TODO: Finish this - watch video https://youtu.be/S8I_gEMvDRE
-			if (SoomlaProfile.IsLoggedIn(twitterProvider))
-			{
-				if (GUI.Button())
-				{
-				}
-			}
+		{	
+			LevelManager levelManager = m_currLevelEntity.GetComponent<LevelManager>();
+			m_lastHighScore = levelManager.GetHighScore();
+			exitedLevel = true;
 
 			Destroy (m_currLevelEntity);
 			m_currLevelEntity = null;
+		}
+	}
+
+	void OnGUI()
+	{
+		if (exitedLevel) //TODO: This succesfully tweets! However 1: It fails the first time as it needs needs a login 
+		{												//		  2: I need to improve the UI for tweeting!
+			if (SoomlaProfile.IsLoggedIn(twitterProvider))
+			{
+				twitterMessage = "Just scored " + m_lastHighScore + " on #ClimberGame";
+				if (GUI.Button(new Rect(300, 150, 250, 50), "Post Score"))
+				{
+					SoomlaProfile.UpdateStatus(twitterProvider, twitterMessage, null, null);
+					exitedLevel = false;
+				}			
+			}
+			else if (GUI.Button(new Rect(285, 150, 215, 50), "Log in to Twitter to Post Scores"))
+			{
+				SoomlaProfile.Login(twitterProvider, null, null);
+				exitedLevel = false;
+			}
 		}
 	}
 

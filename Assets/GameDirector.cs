@@ -6,17 +6,17 @@ using Soomla.Profile;
 
 public class GameDirector : MonoBehaviour 
 {
-	public Provider twitterProvider = Provider.TWITTER;
-	public string twitterMessage;
-
 	public GameObject m_gameCameraEntity;
 	public BackgroundManager m_backgroundManager;
 	public Button m_endLevelButton;
 	public Text m_scoreText;
 	public Text m_highScoreText;
 	public GameObject m_levelManagerPrefab;
+	public string m_twitterMessage;
 
+	private Camera m_gameCamera = null;
 	private int m_lastHighScore = 0;
+	private Provider m_twitterProvider = Provider.TWITTER;
 		
 	private enum GameState
 	{
@@ -32,6 +32,11 @@ public class GameDirector : MonoBehaviour
 	{
 		if (m_currLevelEntity != null)
 		{	
+			if (!SoomlaProfile.IsLoggedIn(m_twitterProvider))
+			{
+				SoomlaProfile.Login(m_twitterProvider, null, null);
+			}
+
 			LevelManager levelManager = m_currLevelEntity.GetComponent<LevelManager>();
 			m_lastHighScore = levelManager.GetHighScore();
 			exitedLevel = true;
@@ -43,20 +48,27 @@ public class GameDirector : MonoBehaviour
 
 	void OnGUI()
 	{
-		if (exitedLevel) //TODO: This succesfully tweets! However 1: It fails the first time as it needs needs a login 
-		{												//		  2: I need to improve the UI for tweeting!
-			if (SoomlaProfile.IsLoggedIn(twitterProvider))
+		if (exitedLevel) //TODO: This succesfully tweets! However I need to improve the UX for tweeting!
+		{
+			// float cameraHeight = m_gameCamera.pixelHeight; // (2.0f * m_gameCamera.orthographicSize) * 
+			// float cameraWidth = m_gameCamera.pixelWidth; // (cameraHeight * m_gameCamera.aspect) *
+
+			if (SoomlaProfile.IsLoggedIn(m_twitterProvider))
 			{
-				twitterMessage = "Just scored " + m_lastHighScore + " on #ClimberGame";
-				if (GUI.Button(new Rect(300, 150, 250, 50), "Post Score"))
+				m_twitterMessage = "Just Scored " + m_lastHighScore + " on #ClimberGame";
+				GUI.Box(new Rect(Screen.width/4.0f, Screen.height/5.0f, Screen.width/1.5f, Screen.height/5.0f), "Tweet Score?"); 
+				if (GUI.Button(new Rect(Screen.width/3.0f, Screen.height*(2.5f/10.0f), Screen.width/2.0f, Screen.height/15.0f), "Yeah!")) 
 				{
-					SoomlaProfile.UpdateStatus(twitterProvider, twitterMessage, null, null);
+					SoomlaProfile.UpdateStatus(m_twitterProvider, m_twitterMessage, null, null);
 					exitedLevel = false;
-				}			
+				}	
+				if (GUI.Button(new Rect(Screen.width/3.0f, Screen.height*(3.25f/10.0f), Screen.width/2.0f, Screen.height/15.0f), "Not Now")) 
+				{
+					exitedLevel = false;
+				}
 			}
-			else if (GUI.Button(new Rect(285, 150, 215, 50), "Log in to Twitter to Post Scores"))
+			else if (GUI.Button(new Rect(Screen.width/4.0f, Screen.height/5.0f, Screen.width/1.5f, Screen.height/10.0f), "Log in to Twitter to Post Scores"))
 			{
-				SoomlaProfile.Login(twitterProvider, null, null);
 				exitedLevel = false;
 			}
 		}
@@ -73,17 +85,21 @@ public class GameDirector : MonoBehaviour
 
 		m_backgroundManager.SetSpeed (0.0f);
 		m_endLevelButton.gameObject.SetActive(false);
+		m_gameCamera = m_gameCameraEntity.GetComponent<Camera>();
 	}
 
 	void Update () 
 	{
-		if (m_gameState == GameState.kMainMenu) 
+		if (!exitedLevel)
 		{
-			UpdateMainMenu();
-		} 
-		else if (m_gameState == GameState.kInGame) 
-		{
-			UpdateInGame();
+			if (m_gameState == GameState.kMainMenu) 
+			{
+				UpdateMainMenu();
+			} 
+			else if (m_gameState == GameState.kInGame) 
+			{
+				UpdateInGame();
+			}
 		}
 	}
 	

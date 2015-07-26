@@ -56,13 +56,13 @@ public class GameDirector : MonoBehaviour
 			if (SoomlaProfile.IsLoggedIn(m_twitterProvider))
 			{
 				m_twitterMessage = "Just Scored " + m_lastHighScore + " on #ClimberGame";
-				GUI.Box(new Rect(Screen.width/4.0f, Screen.height/5.0f, Screen.width/1.5f, Screen.height/5.0f), "Tweet Score?"); 
-				if (GUI.Button(new Rect(Screen.width/3.0f, Screen.height*(2.5f/10.0f), Screen.width/2.0f, Screen.height/15.0f), "Yeah!")) 
+				GUI.Box(new Rect(Screen.width/4.0f, Screen.height/5.0f, Screen.width/2.0f, Screen.height/5.0f), "Tweet Score?"); 
+				if (GUI.Button(new Rect(Screen.width/3.0f, Screen.height*(2.5f/10.0f), Screen.width/3.0f, Screen.height/15.0f), "Yeah!")) 
 				{
 					SoomlaProfile.UpdateStatus(m_twitterProvider, m_twitterMessage, null, null);
 					exitedLevel = false;
 				}	
-				if (GUI.Button(new Rect(Screen.width/3.0f, Screen.height*(3.25f/10.0f), Screen.width/2.0f, Screen.height/15.0f), "Not Now")) 
+				if (GUI.Button(new Rect(Screen.width/3.0f, Screen.height*(3.25f/10.0f), Screen.width/3.0f, Screen.height/15.0f), "Not Now")) 
 				{
 					exitedLevel = false;
 				}

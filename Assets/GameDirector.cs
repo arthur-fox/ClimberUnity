@@ -53,6 +53,7 @@ public class GameDirector : MonoBehaviour
 			// float cameraHeight = m_gameCamera.pixelHeight; // (2.0f * m_gameCamera.orthographicSize) * 
 			// float cameraWidth = m_gameCamera.pixelWidth; // (cameraHeight * m_gameCamera.aspect) *
 
+			// TODO: GET THIS THE RIGHT SIZE - REPRESENTATIVE IN EDITOR AND IN-GAME
 			if (SoomlaProfile.IsLoggedIn(m_twitterProvider))
 			{
 				m_twitterMessage = "Just Scored " + m_lastHighScore + " on #ClimberGame";
@@ -67,7 +68,7 @@ public class GameDirector : MonoBehaviour
 					exitedLevel = false;
 				}
 			}
-			else if (GUI.Button(new Rect(Screen.width/4.0f, Screen.height/5.0f, Screen.width/1.5f, Screen.height/10.0f), "Log in to Twitter to Post Scores"))
+			else if (GUI.Button(Rect.MinMaxRect(Screen.width/4.0f, Screen.height/5.0f, Screen.width/1.5f, Screen.height/10.0f), "Log in to Twitter to Post Scores"))
 			{
 				exitedLevel = false;
 			}

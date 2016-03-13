@@ -3,13 +3,10 @@ using System.Collections;
 
 public class BackgroundManager : MonoBehaviour 
 {
-	public ScrollingBackground[] m_scrollingBackgrounds;
+	public ScrollingBackground m_scrollingBackground;
 
 	public void SetSpeed(float speed) 
 	{
-		for (int i = 0; i < m_scrollingBackgrounds.Length; ++i) 
-		{
-			m_scrollingBackgrounds[i].SetSpeed(speed);
-		}
+		m_scrollingBackground.SetSpeed(speed);
 	}
 }

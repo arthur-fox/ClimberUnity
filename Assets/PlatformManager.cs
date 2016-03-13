@@ -49,9 +49,9 @@ public class PlatformManager : MonoBehaviour {
 
 	void Start()
 	{
-		Vector3 leftCornerPos = m_gameCamera.ViewportToWorldPoint( new Vector3( 1.0f, 1.0f, m_gameCamera.nearClipPlane) );
+		Vector3 rightTopPos = m_gameCamera.ViewportToWorldPoint( new Vector3( 1.0f, 1.0f, m_gameCamera.nearClipPlane) );
 		//m_levelWidth = leftCornerPos.x * 2.0f;
-		m_levelHeight = leftCornerPos.y * 2.0f; 
+		m_levelHeight = rightTopPos.y * 2.0f; 
 	}
 
 	void FixedUpdate () 

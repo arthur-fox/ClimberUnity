@@ -8,7 +8,9 @@ public class GameDirector : MonoBehaviour
 {
 	public GameObject m_gameCameraEntity;
 	public BackgroundManager m_backgroundManager;
+	public Button m_playLevelButton;
 	public Button m_endLevelButton;
+	public Text m_climberText;
 	public Text m_scoreText;
 	public Text m_highScoreText;
 	public GameObject m_levelManagerPrefab;
@@ -41,9 +43,28 @@ public class GameDirector : MonoBehaviour
 			m_lastHighScore = levelManager.GetHighScore();
 			exitedLevel = true;
 
+			m_endLevelButton.gameObject.SetActive(false);
+
 			Destroy (m_currLevelEntity);
 			m_currLevelEntity = null;
 		}
+	}
+
+	public void OnPlayLevel()
+	{
+		m_currLevelEntity = (GameObject) Instantiate(m_levelManagerPrefab);
+		LevelManager levelManager = m_currLevelEntity.GetComponent<LevelManager>();
+		levelManager.SetCamera(m_gameCameraEntity);
+		levelManager.m_scoreText = m_scoreText;
+		levelManager.m_highScoreText = m_highScoreText;
+		levelManager.m_backgroundManager = m_backgroundManager;
+
+		m_climberText.text = "";
+
+		m_playLevelButton.gameObject.SetActive(false);
+		m_endLevelButton.gameObject.SetActive(true);
+
+		m_gameState = GameState.kInGame;
 	}
 
 	void OnGUI()
@@ -106,8 +127,9 @@ public class GameDirector : MonoBehaviour
 	
 	void UpdateMainMenu()
 	{
+		/*
 		if (Input.touchCount > 0 || Input.anyKeyDown) 
-		{
+		{			
 			m_currLevelEntity = (GameObject) Instantiate(m_levelManagerPrefab);
 			LevelManager levelManager = m_currLevelEntity.GetComponent<LevelManager>();
 			levelManager.SetCamera(m_gameCameraEntity);
@@ -115,18 +137,22 @@ public class GameDirector : MonoBehaviour
 			levelManager.m_highScoreText = m_highScoreText;
 			levelManager.m_backgroundManager = m_backgroundManager;
 
+			m_climberText.text = "";
+
 			m_endLevelButton.gameObject.SetActive(true);
 
 			m_gameState = GameState.kInGame;
 		}
+		*/
 	}
 	
 	void UpdateInGame()
-	{
+	{		
 		if (m_currLevelEntity == null) 
-		{		
-			m_endLevelButton.gameObject.SetActive(false);
-			m_scoreText.text = "Climber";
+		{
+			m_playLevelButton.gameObject.SetActive(true);
+			m_scoreText.text = "";
+			m_climberText.text = "Climber";
 
 			m_gameState = GameState.kMainMenu;
 		}

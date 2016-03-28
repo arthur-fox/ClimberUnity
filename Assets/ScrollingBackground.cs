@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ScrollingBackground : MonoBehaviour 
 {
-	const float kHeight = 13.66f; // TODO: Don't just have this as a Magic number based on height of sprites
+	const float kHeight = 13.5f; //13.666f; // TODO: Don't just have this as a Magic number based on height of sprites
 	const string kTextureName = "_MainTex";
 
 	public float m_speed = 1.0f;

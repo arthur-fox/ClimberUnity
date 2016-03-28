@@ -26,6 +26,11 @@ public class ScrollingBackground : MonoBehaviour
 	{
 		float frameSpeed = m_speed/kHeight;
 		m_y += frameSpeed * Time.fixedDeltaTime;
+		if (m_y > 1.0f) // Keep floating precision as accurate as possible!
+		{
+			m_y -= 1.0f;
+		}
+
 		if( backgroundImage.enabled )
 		{
 			uvOffset = new Vector2(0.0f, m_y);

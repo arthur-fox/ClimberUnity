@@ -8,7 +8,7 @@ public class ScrollingBackground : MonoBehaviour
 
 	public float m_speed = 1.0f;
 
-	private float m_y = 0;
+	private float m_y = 0.575f; // Setting a default UV Offset to position the Main Menu buttons well when yu open the app
 	private Vector2 uvOffset = Vector2.zero;
 	private Renderer backgroundImage;
 
@@ -26,7 +26,7 @@ public class ScrollingBackground : MonoBehaviour
 	{
 		float frameSpeed = m_speed/kHeight;
 		m_y += frameSpeed * Time.fixedDeltaTime;
-		if (m_y > 1.0f) // Keep floating precision as accurate as possible!
+		if (m_y > 1.0f) // Wrap around when we get to 1.0f to keep floating precision as accurate as possible!
 		{
 			m_y -= 1.0f;
 		}

@@ -12,7 +12,15 @@ public class GameDirector : MonoBehaviour
 
 	// MainMenu UI
 	public Button m_playLevelButton;
+	public Button m_heartButton;
 	public Text m_climberText;
+
+	// HeartPage UI - TODO: improve this so that I re-use the buttons and text in PostGame UI
+	public Button m_heartTwitterYesButton;
+	public Button m_heartTwitterNoButton;
+	public Text m_heartTwitterMessageText;
+	public Text m_heartTweetSupportText;
+	public Text m_heartPromptUserLogInText;
 
 	// PostGame UI
 	public Button m_twitterYesButton;
@@ -32,12 +40,14 @@ public class GameDirector : MonoBehaviour
 	private enum GameState
 	{
 		kMainMenu = 0,
-		kPostGame = 1,
-		kInGame = 2
+		kHeartPage = 1,
+		kPostGame = 2,
+		kInGame = 3
 	}
 	private GameState m_gameState = GameState.kMainMenu;
 	private GameObject m_currLevelEntity = null;
 
+	// Button press functions
 	public void OnQuitLevel()
 	{
 		if (m_currLevelEntity != null)
@@ -51,6 +61,7 @@ public class GameDirector : MonoBehaviour
 			m_twitterMessageText.text = "Just Scored " + m_lastHighScore + " on #ClimberGame";
 
 			SetMainMenuUI(false);
+			SetHeartPageUI(false);
 			SetPostGameUI(true);
 			SetInGameUI(false);
 			m_gameState = GameState.kPostGame;		
@@ -67,9 +78,19 @@ public class GameDirector : MonoBehaviour
 		levelManager.m_backgroundManager = m_backgroundManager;
 
 		SetMainMenuUI(false);
+		SetHeartPageUI(false);
 		SetPostGameUI(false);
 		SetInGameUI(true);
 		m_gameState = GameState.kInGame;
+	}
+
+	public void OnHeartPage()
+	{
+		SetMainMenuUI(false);
+		SetHeartPageUI(true);
+		SetPostGameUI(false);
+		SetInGameUI(false);
+		m_gameState = GameState.kHeartPage;		
 	}
 
 	public void OnTweetScore()
@@ -82,11 +103,13 @@ public class GameDirector : MonoBehaviour
 	public void OnReturnToMainMenu()
 	{
 		SetMainMenuUI(true);
+		SetHeartPageUI(false);
 		SetPostGameUI(false);
 		SetInGameUI(false);
 		m_gameState = GameState.kMainMenu;
 	}
 
+	// State functions
 	void Awake()
 	{
 		Application.targetFrameRate = 60;
@@ -104,12 +127,17 @@ public class GameDirector : MonoBehaviour
 		m_gameState = GameState.kMainMenu;
 	}
 
+	// Update functions
 	void Update () 
 	{
 		if (m_gameState == GameState.kMainMenu) 
 		{
 			//UpdateMainMenu();
 		} 
+		else if (m_gameState == GameState.kHeartPage) 
+		{
+			UpdateHeartPage();
+		}
 		else if (m_gameState == GameState.kPostGame) 
 		{
 			UpdatePostGame();
@@ -119,9 +147,34 @@ public class GameDirector : MonoBehaviour
 			//UpdateInGame();
 		}		
 	}
-	
+		
 	void UpdateMainMenu()
 	{		
+	}
+
+	void UpdateHeartPage()
+	{
+		if (!SoomlaProfile.IsLoggedIn(m_twitterProvider))
+		{
+			SoomlaProfile.Login(m_twitterProvider, null, null);
+		}
+
+		m_heartTwitterMessageText.gameObject.SetActive(true);
+
+		if (SoomlaProfile.IsLoggedIn(m_twitterProvider))
+		{
+			m_heartTwitterYesButton.gameObject.SetActive(true);
+			m_heartTwitterNoButton.gameObject.SetActive(true);
+			m_heartTweetSupportText.gameObject.SetActive(true);
+			m_heartPromptUserLogInText.gameObject.SetActive(false);
+		}
+		else
+		{
+			m_heartTwitterYesButton.gameObject.SetActive(false);
+			m_heartTwitterNoButton.gameObject.SetActive(true);
+			m_heartTweetSupportText.gameObject.SetActive(false);
+			m_heartPromptUserLogInText.gameObject.SetActive(true);
+		}
 	}
 
 	void UpdatePostGame()
@@ -152,11 +205,22 @@ public class GameDirector : MonoBehaviour
 	void UpdateInGame()
 	{		
 	}
-		
+
+	// UI functions
 	void SetMainMenuUI(bool enable)
 	{
 		m_playLevelButton.gameObject.SetActive(enable);
+		m_heartButton.gameObject.SetActive(enable);
 		m_climberText.gameObject.SetActive(enable);
+	}
+
+	void SetHeartPageUI(bool enable)
+	{
+		m_heartTwitterYesButton.gameObject.SetActive(enable);
+		m_heartTwitterNoButton.gameObject.SetActive(enable);
+		m_heartTwitterMessageText.gameObject.SetActive(enable);
+		m_heartTweetSupportText.gameObject.SetActive(enable);
+		m_heartPromptUserLogInText.gameObject.SetActive(enable);
 	}
 
 	void SetPostGameUI(bool enable)

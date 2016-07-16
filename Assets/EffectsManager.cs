@@ -29,6 +29,10 @@ public class EffectsManager : MonoBehaviour
 	private List<GameObject> m_oldParticles;
 	private UnityStandardAssets.ImageEffects.ColorCorrectionCurves m_colourCorrection = null;
 	private UnityStandardAssets.ImageEffects.ScreenOverlay m_overlay = null;
+	private bool m_touchingLHS = false;
+	private bool m_touchingRHS = false;
+	private bool m_releasedLHS = false;
+	private bool m_releasedRHS = false;
 
 	public void PlayOverlayEffect()
 	{
@@ -50,6 +54,9 @@ public class EffectsManager : MonoBehaviour
 			Destroy(m_oldParticles[i]);
 		}
 		m_oldParticles = null;
+
+		m_leftTapButton.SetActive(false);
+		m_rightTapButton.SetActive(false);
 	}
 
 	void Awake()
@@ -73,10 +80,37 @@ public class EffectsManager : MonoBehaviour
 
 	void FixedUpdate () 
 	{
+		UpdateInput();
 		UpdateTapButtons ();
 		//UpdateParticles ();
 		UpdateSaturation ();
 		UpdateOverlay ();
+	}
+
+	void UpdateInput()
+	{
+		bool touchedLHS = false;
+		bool touchedRHS = false;
+		for (int i = 0; i < Input.touchCount; ++i) 
+		{
+			float touchX = Input.GetTouch (i).position.x;
+			if (touchX < (Screen.width/2.0f) )
+			{
+				touchedLHS = true;
+			}
+			else
+			{
+				touchedRHS = true;
+			}
+		}
+
+		// We only want to make the button disappear when the player lets go
+		m_releasedLHS = (m_touchingLHS && !touchedLHS);
+		m_releasedRHS = (m_touchingRHS && !touchedRHS);
+
+		// Update whether we are touching this frame or not
+		m_touchingLHS = touchedLHS;
+		m_touchingRHS = touchedRHS;
 	}
 
 	void UpdateTapButtons()
@@ -86,27 +120,12 @@ public class EffectsManager : MonoBehaviour
 			return;
 		}
 
-		bool touchLHS = false;
-		bool touchRHS = false;
-		for (int i = 0; i < Input.touchCount; ++i) 
-		{
-			float touchX = Input.GetTouch (i).position.x;
-			if (touchX < (Screen.width/2.0f) )
-			{
-				touchLHS = true;
-			}
-			else
-			{
-				touchRHS = true;
-			}
-		}
-
 		if (m_playerInputState == PlayerInputState.kState1MustPressLeft)
 		{
 			m_leftTapButton.SetActive(true);
 			m_rightTapButton.SetActive(false);
 			
-			if (Input.GetKey (KeyCode.LeftArrow) || touchLHS)
+			if (Input.GetKey (KeyCode.LeftArrow) || m_releasedLHS)
 			{
 				m_playerInputState = PlayerInputState.kState2MustPressRight;
 
@@ -125,7 +144,7 @@ public class EffectsManager : MonoBehaviour
 			m_leftTapButton.SetActive(false);
 			m_rightTapButton.SetActive(true);
 
-			if (Input.GetKey (KeyCode.RightArrow) || touchRHS) 
+			if (Input.GetKey (KeyCode.RightArrow) || m_releasedRHS) 
 			{
 				m_playerInputState = PlayerInputState.kState3PressedBoth;
 //				ParticleSystem[] particles = m_currClickParticle.GetComponentsInChildren<ParticleSystem>();

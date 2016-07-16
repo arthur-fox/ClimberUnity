@@ -43,6 +43,7 @@ MonoBehaviour:
   m_gameCameraEntity: {fileID: 0}
   m_clickMeParticlePrefab: {fileID: 185006, guid: f971782d75df3403299bbb4afe482b46,
     type: 2}
+  m_tapButtonPrefab: {fileID: 156080, guid: ebb5463c2d05a4d99b21ef2cf324ed2c, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -54,6 +55,10 @@ Prefab:
       propertyPath: m_clickMeParticlePrefab
       value: 
       objectReference: {fileID: 185006, guid: f971782d75df3403299bbb4afe482b46, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_tapButtonPrefab
+      value: 
+      objectReference: {fileID: 156080, guid: ebb5463c2d05a4d99b21ef2cf324ed2c, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 106826}

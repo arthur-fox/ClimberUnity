@@ -14,15 +14,18 @@ public class EffectsManager : MonoBehaviour
 	public Player m_player;
 	public GameObject m_gameCameraEntity;
 	public GameObject m_clickMeParticlePrefab;
+	public GameObject m_tapButtonPrefab;
 
-	private enum PlayerInput
+	private enum PlayerInputState
 	{
-		kPlayerNotPressedLeft = 0,
-		kPlayerNotPressedRight = 1,
-		kPlayerPressedLeftAndRight = 2
+		kState1MustPressLeft = 0,
+		kState2MustPressRight = 1,
+		kState3PressedBoth = 2
 	}
-	private PlayerInput m_playerInput = PlayerInput.kPlayerNotPressedLeft;
-	private GameObject m_clickParticle;
+	private PlayerInputState m_playerInputState = PlayerInputState.kState1MustPressLeft;
+	private GameObject m_currClickMeParticle;
+	private GameObject m_leftTapButton;
+	private GameObject m_rightTapButton;
 	private List<GameObject> m_oldParticles;
 	private UnityStandardAssets.ImageEffects.ColorCorrectionCurves m_colourCorrection = null;
 	private UnityStandardAssets.ImageEffects.ScreenOverlay m_overlay = null;
@@ -37,9 +40,9 @@ public class EffectsManager : MonoBehaviour
 		m_overlay.intensity = kDefaultOverlayIntensity;
 		m_colourCorrection.saturation = kDefaultColourSaturation;
 
-		if (m_clickParticle != null) 
+		if (m_currClickMeParticle != null) 
 		{
-			Destroy(m_clickParticle);
+			Destroy(m_currClickMeParticle);
 		}
 
 		for (int i = 0; i < m_oldParticles.Count; i++) 
@@ -52,6 +55,14 @@ public class EffectsManager : MonoBehaviour
 	void Awake()
 	{ 
 		m_oldParticles = new List<GameObject>();
+
+		Vector3 leftPosition = new Vector3(-1.45f, -0.5f, 0.0f);
+		m_leftTapButton = (GameObject) Instantiate(m_tapButtonPrefab, leftPosition, Quaternion.identity);
+		m_leftTapButton.SetActive(false);
+
+		Vector3 rightPosition = new Vector3(1.45f, -0.5f, 0.0f);
+		m_rightTapButton = (GameObject) Instantiate(m_tapButtonPrefab, rightPosition, Quaternion.identity);
+		m_rightTapButton.SetActive(false);
 	}
 
 	void Start()
@@ -62,15 +73,15 @@ public class EffectsManager : MonoBehaviour
 
 	void FixedUpdate () 
 	{
-		UpdateInput ();
-		UpdateParticles ();
+		UpdateTapButtons ();
+		//UpdateParticles ();
 		UpdateSaturation ();
 		UpdateOverlay ();
 	}
 
-	void UpdateInput() // TODO: Actually Delete the PoarticleSystems once they finished their Stop()
+	void UpdateTapButtons()
 	{
-		if (m_playerInput == PlayerInput.kPlayerPressedLeftAndRight) 
+		if (m_playerInputState == PlayerInputState.kState3PressedBoth) 
 		{
 			return;
 		}
@@ -90,49 +101,63 @@ public class EffectsManager : MonoBehaviour
 			}
 		}
 
-		if (m_playerInput == PlayerInput.kPlayerNotPressedLeft)
+		if (m_playerInputState == PlayerInputState.kState1MustPressLeft)
 		{
+			m_leftTapButton.SetActive(true);
+			m_rightTapButton.SetActive(false);
+			
 			if (Input.GetKey (KeyCode.LeftArrow) || touchLHS)
 			{
-				m_playerInput = PlayerInput.kPlayerNotPressedRight;
-				ParticleSystem[] particles = m_clickParticle.GetComponentsInChildren<ParticleSystem>();
-				foreach(ParticleSystem particle in particles)
-				{
-					particle.Stop();
-				}
-				m_oldParticles.Add(m_clickParticle);
-				m_clickParticle = null;
+				m_playerInputState = PlayerInputState.kState2MustPressRight;
+
+//				ParticleSystem[] particles = m_currClickParticle.GetComponentsInChildren<ParticleSystem>();
+//				foreach(ParticleSystem particle in particles)
+//				{
+//					particle.Stop();
+//				}
+//				m_oldParticles.Add(m_clickParticle);
+//				m_currClickParticle = null;
 			}
 		}
-		else if (m_playerInput == PlayerInput.kPlayerNotPressedRight)
+
+		if (m_playerInputState == PlayerInputState.kState2MustPressRight)
 		{
+			m_leftTapButton.SetActive(false);
+			m_rightTapButton.SetActive(true);
+
 			if (Input.GetKey (KeyCode.RightArrow) || touchRHS) 
 			{
-				m_playerInput = PlayerInput.kPlayerPressedLeftAndRight;
-				ParticleSystem[] particles = m_clickParticle.GetComponentsInChildren<ParticleSystem>();
-				foreach(ParticleSystem particle in particles)
-				{
-					particle.Stop();
-				}
-				m_oldParticles.Add(m_clickParticle);
-				m_clickParticle = null;
+				m_playerInputState = PlayerInputState.kState3PressedBoth;
+//				ParticleSystem[] particles = m_currClickParticle.GetComponentsInChildren<ParticleSystem>();
+//				foreach(ParticleSystem particle in particles)
+//				{
+//					particle.Stop();
+//				}
+//				m_oldParticles.Add(m_clickParticle);
+//				m_currClickParticle = null;
 			}
+		}
+
+		if (m_playerInputState == PlayerInputState.kState3PressedBoth)
+		{
+			m_leftTapButton.SetActive(false);
+			m_rightTapButton.SetActive(false);
 		}
 	}
 
 	void UpdateParticles()
 	{
-		if (m_clickParticle == null) 
+		if (m_currClickMeParticle == null) 
 		{
-			if (m_playerInput == PlayerInput.kPlayerNotPressedLeft)
+			if (m_playerInputState == PlayerInputState.kState1MustPressLeft)
 			{
 				Vector3 position = new Vector3(-1.25f, 0.0f, -0.5f);
-				m_clickParticle = (GameObject) Instantiate(m_clickMeParticlePrefab, position, Quaternion.identity);
+				m_currClickMeParticle = (GameObject) Instantiate(m_clickMeParticlePrefab, position, Quaternion.identity);
 			}
-			else if (m_playerInput == PlayerInput.kPlayerNotPressedRight)
+			else if (m_playerInputState == PlayerInputState.kState2MustPressRight)
 			{
 				Vector3 position = new Vector3(1.25f, 0.0f, -0.5f);
-				m_clickParticle = (GameObject) Instantiate (m_clickMeParticlePrefab, position, Quaternion.identity);
+				m_currClickMeParticle = (GameObject) Instantiate (m_clickMeParticlePrefab, position, Quaternion.identity);
 			}
 		}
 	}

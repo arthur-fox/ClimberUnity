@@ -15,9 +15,7 @@ public class GameDirector : MonoBehaviour
 	public Button m_heartButton;
 	public Text m_climberText;
 
-	// HeartPage UI - TODO: improve this so that I re-use the buttons and text in PostGame UI
-	public Button m_heartTwitterYesButton;
-	public Button m_heartTwitterNoButton;
+	// HeartPage UI - Re-using Yes + No buttons from PostGameUI
 	public Text m_heartTwitterMessageText;
 	public Text m_heartTweetSupportText;
 	public Text m_heartPromptUserLogInText;
@@ -60,10 +58,8 @@ public class GameDirector : MonoBehaviour
 
 			m_twitterMessageText.text = "Just Scored " + m_lastHighScore + " on #ClimberGame!";
 
-			SetMainMenuUI(false);
-			SetHeartPageUI(false);
+			SetAllUI(false);
 			SetPostGameUI(true);
-			SetInGameUI(false);
 			m_gameState = GameState.kPostGame;		
 		}
 	}
@@ -76,20 +72,17 @@ public class GameDirector : MonoBehaviour
 		levelManager.m_scoreText = m_scoreText;
 		levelManager.m_highScoreText = m_highScoreText;
 		levelManager.m_backgroundManager = m_backgroundManager;
+		levelManager.transform.SetParent(transform);
 
-		SetMainMenuUI(false);
-		SetHeartPageUI(false);
-		SetPostGameUI(false);
+		SetAllUI(false);
 		SetInGameUI(true);
 		m_gameState = GameState.kInGame;
 	}
 
 	public void OnHeartPage()
 	{
-		SetMainMenuUI(false);
+		SetAllUI(false);
 		SetHeartPageUI(true);
-		SetPostGameUI(false);
-		SetInGameUI(false);
 		m_gameState = GameState.kHeartPage;		
 	}
 
@@ -109,10 +102,8 @@ public class GameDirector : MonoBehaviour
 
 	public void OnReturnToMainMenu()
 	{
+		SetAllUI(false);
 		SetMainMenuUI(true);
-		SetHeartPageUI(false);
-		SetPostGameUI(false);
-		SetInGameUI(false);
 		m_gameState = GameState.kMainMenu;
 	}
 
@@ -128,9 +119,8 @@ public class GameDirector : MonoBehaviour
 
 		m_backgroundManager.SetSpeed (0.0f);
 
+		SetAllUI(false);
 		SetMainMenuUI(true);
-		SetPostGameUI(false);
-		SetInGameUI(false);
 		m_gameState = GameState.kMainMenu;
 	}
 
@@ -170,15 +160,15 @@ public class GameDirector : MonoBehaviour
 
 		if (SoomlaProfile.IsLoggedIn(m_twitterProvider))
 		{
-			m_heartTwitterYesButton.gameObject.SetActive(true);
-			m_heartTwitterNoButton.gameObject.SetActive(true);
+			m_twitterYesButton.gameObject.SetActive(true);
+			m_twitterNoButton.gameObject.SetActive(true);
 			m_heartTweetSupportText.gameObject.SetActive(true);
 			m_heartPromptUserLogInText.gameObject.SetActive(false);
 		}
 		else
 		{
-			m_heartTwitterYesButton.gameObject.SetActive(false);
-			m_heartTwitterNoButton.gameObject.SetActive(true);
+			m_twitterYesButton.gameObject.SetActive(false);
+			m_twitterNoButton.gameObject.SetActive(true);
 			m_heartTweetSupportText.gameObject.SetActive(false);
 			m_heartPromptUserLogInText.gameObject.SetActive(true);
 		}
@@ -214,6 +204,27 @@ public class GameDirector : MonoBehaviour
 	}
 
 	// UI functions
+	void SetAllUI(bool enable)
+	{
+		m_playLevelButton.gameObject.SetActive(enable);
+		m_heartButton.gameObject.SetActive(enable);
+		m_climberText.gameObject.SetActive(enable);
+
+		m_heartTwitterMessageText.gameObject.SetActive(enable);
+		m_heartTweetSupportText.gameObject.SetActive(enable);
+		m_heartPromptUserLogInText.gameObject.SetActive(enable);
+
+		m_twitterYesButton.gameObject.SetActive(enable);
+		m_twitterNoButton.gameObject.SetActive(enable);
+		m_twitterMessageText.gameObject.SetActive(enable);
+		m_tweetScoreText.gameObject.SetActive(enable);
+		m_promptUserLogInText.gameObject.SetActive(enable);
+
+		m_endLevelButton.gameObject.SetActive(enable);
+		m_scoreText.gameObject.SetActive(enable);
+		m_highScoreText.gameObject.SetActive(enable);
+	}
+
 	void SetMainMenuUI(bool enable)
 	{
 		m_playLevelButton.gameObject.SetActive(enable);
@@ -223,8 +234,8 @@ public class GameDirector : MonoBehaviour
 
 	void SetHeartPageUI(bool enable)
 	{
-		m_heartTwitterYesButton.gameObject.SetActive(enable);
-		m_heartTwitterNoButton.gameObject.SetActive(enable);
+		m_twitterYesButton.gameObject.SetActive(enable);
+		m_twitterNoButton.gameObject.SetActive(enable);
 		m_heartTwitterMessageText.gameObject.SetActive(enable);
 		m_heartTweetSupportText.gameObject.SetActive(enable);
 		m_heartPromptUserLogInText.gameObject.SetActive(enable);

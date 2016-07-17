@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,8 +14,8 @@ public class EffectsManager : MonoBehaviour
 
 	public Player m_player;
 	public GameObject m_gameCameraEntity;
-	public GameObject m_clickMeParticlePrefab;
-	public GameObject m_tapButtonPrefab;
+	public Button m_leftTapButton;
+	public Button m_rightTapButton;
 
 	private enum PlayerInputState
 	{
@@ -23,20 +24,34 @@ public class EffectsManager : MonoBehaviour
 		kState3PressedBoth = 2
 	}
 	private PlayerInputState m_playerInputState = PlayerInputState.kState1MustPressLeft;
-	private GameObject m_currClickMeParticle;
-	private GameObject m_leftTapButton;
-	private GameObject m_rightTapButton;
-	private List<GameObject> m_oldParticles;
 	private UnityStandardAssets.ImageEffects.ColorCorrectionCurves m_colourCorrection = null;
 	private UnityStandardAssets.ImageEffects.ScreenOverlay m_overlay = null;
-	private bool m_touchingLHS = false;
-	private bool m_touchingRHS = false;
-	private bool m_releasedLHS = false;
-	private bool m_releasedRHS = false;
 
 	public void PlayOverlayEffect()
 	{
 		m_overlay.intensity = -2.0f;
+	}
+
+	public void OnLeftButton()
+	{
+		if (m_playerInputState == PlayerInputState.kState1MustPressLeft)
+		{
+			m_leftTapButton.gameObject.SetActive(false);
+			m_rightTapButton.gameObject.SetActive(true);
+
+			m_playerInputState = PlayerInputState.kState2MustPressRight;
+		}
+	}
+
+	public void OnRightButton()
+	{
+		if (m_playerInputState == PlayerInputState.kState2MustPressRight)
+		{
+			m_leftTapButton.gameObject.SetActive(false);
+			m_rightTapButton.gameObject.SetActive(false);
+
+			m_playerInputState = PlayerInputState.kState3PressedBoth;
+		}
 	}
 
 	void OnDestroy()
@@ -44,25 +59,18 @@ public class EffectsManager : MonoBehaviour
 		m_overlay.intensity = kDefaultOverlayIntensity;
 		m_colourCorrection.saturation = kDefaultColourSaturation;
 
-		if (m_currClickMeParticle != null) 
-		{
-			Destroy(m_currClickMeParticle);
-		}
-
-		for (int i = 0; i < m_oldParticles.Count; i++) 
-		{
-			Destroy(m_oldParticles[i]);
-		}
-		m_oldParticles = null;
-
-		m_leftTapButton.SetActive(false);
-		m_rightTapButton.SetActive(false);
+		m_leftTapButton.gameObject.SetActive(false);
+		m_rightTapButton.gameObject.SetActive(false);
 	}
 
 	void Awake()
-	{ 
-		m_oldParticles = new List<GameObject>();
+	{
+		m_playerInputState = PlayerInputState.kState1MustPressLeft;
 
+		m_leftTapButton.gameObject.SetActive(true);
+		m_rightTapButton.gameObject.SetActive(false);
+
+		/*
 		Vector3 leftPosition = new Vector3(-1.45f, -0.5f, 0.0f);
 		m_leftTapButton = (GameObject) Instantiate(m_tapButtonPrefab, leftPosition, Quaternion.identity);
 		m_leftTapButton.SetActive(false);
@@ -70,6 +78,7 @@ public class EffectsManager : MonoBehaviour
 		Vector3 rightPosition = new Vector3(1.45f, -0.5f, 0.0f);
 		m_rightTapButton = (GameObject) Instantiate(m_tapButtonPrefab, rightPosition, Quaternion.identity);
 		m_rightTapButton.SetActive(false);
+		*/
 	}
 
 	void Start()
@@ -79,108 +88,11 @@ public class EffectsManager : MonoBehaviour
 	}
 
 	void FixedUpdate () 
-	{
-		UpdateInput();
-		UpdateTapButtons ();
-		//UpdateParticles ();
-		UpdateSaturation ();
-		UpdateOverlay ();
-	}
-
-	void UpdateInput()
-	{
-		bool touchedLHS = false;
-		bool touchedRHS = false;
-		for (int i = 0; i < Input.touchCount; ++i) 
-		{
-			float touchX = Input.GetTouch (i).position.x;
-			if (touchX < (Screen.width/2.0f) )
-			{
-				touchedLHS = true;
-			}
-			else
-			{
-				touchedRHS = true;
-			}
-		}
-
-		// We only want to make the button disappear when the player lets go
-		m_releasedLHS = (m_touchingLHS && !touchedLHS);
-		m_releasedRHS = (m_touchingRHS && !touchedRHS);
-
-		// Update whether we are touching this frame or not
-		m_touchingLHS = touchedLHS;
-		m_touchingRHS = touchedRHS;
-	}
-
-	void UpdateTapButtons()
-	{
-		if (m_playerInputState == PlayerInputState.kState3PressedBoth) 
-		{
-			return;
-		}
-
-		if (m_playerInputState == PlayerInputState.kState1MustPressLeft)
-		{
-			m_leftTapButton.SetActive(true);
-			m_rightTapButton.SetActive(false);
-			
-			if (Input.GetKey (KeyCode.LeftArrow) || m_releasedLHS)
-			{
-				m_playerInputState = PlayerInputState.kState2MustPressRight;
-
-//				ParticleSystem[] particles = m_currClickParticle.GetComponentsInChildren<ParticleSystem>();
-//				foreach(ParticleSystem particle in particles)
-//				{
-//					particle.Stop();
-//				}
-//				m_oldParticles.Add(m_clickParticle);
-//				m_currClickParticle = null;
-			}
-		}
-
-		if (m_playerInputState == PlayerInputState.kState2MustPressRight)
-		{
-			m_leftTapButton.SetActive(false);
-			m_rightTapButton.SetActive(true);
-
-			if (Input.GetKey (KeyCode.RightArrow) || m_releasedRHS) 
-			{
-				m_playerInputState = PlayerInputState.kState3PressedBoth;
-//				ParticleSystem[] particles = m_currClickParticle.GetComponentsInChildren<ParticleSystem>();
-//				foreach(ParticleSystem particle in particles)
-//				{
-//					particle.Stop();
-//				}
-//				m_oldParticles.Add(m_clickParticle);
-//				m_currClickParticle = null;
-			}
-		}
-
-		if (m_playerInputState == PlayerInputState.kState3PressedBoth)
-		{
-			m_leftTapButton.SetActive(false);
-			m_rightTapButton.SetActive(false);
-		}
-	}
-
-	void UpdateParticles()
-	{
-		if (m_currClickMeParticle == null) 
-		{
-			if (m_playerInputState == PlayerInputState.kState1MustPressLeft)
-			{
-				Vector3 position = new Vector3(-1.25f, 0.0f, -0.5f);
-				m_currClickMeParticle = (GameObject) Instantiate(m_clickMeParticlePrefab, position, Quaternion.identity);
-			}
-			else if (m_playerInputState == PlayerInputState.kState2MustPressRight)
-			{
-				Vector3 position = new Vector3(1.25f, 0.0f, -0.5f);
-				m_currClickMeParticle = (GameObject) Instantiate (m_clickMeParticlePrefab, position, Quaternion.identity);
-			}
-		}
-	}
-
+	{		
+		UpdateSaturation();
+		UpdateOverlay();
+	}		
+		
 	void UpdateSaturation()
 	{
 		float playerHeight = 5.0f; // NOTE: This only works because i've hardcoded min and max Saturation

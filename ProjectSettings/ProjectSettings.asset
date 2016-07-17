@@ -10,7 +10,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 0
   companyName: OMA
-  productName: ClimberUnity
+  productName: Climber
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_ShowUnitySplashScreen: 1
@@ -123,7 +123,7 @@ PlayerSettings:
   uIStatusBarHidden: 1
   uIExitOnSuspend: 0
   uIStatusBarStyle: 0
-  iPhoneSplashScreen: {fileID: 2800000, guid: 0a1505ccaf00d415db04dd00b8663afd, type: 3}
+  iPhoneSplashScreen: {fileID: 0}
   iPhoneHighResSplashScreen: {fileID: 0}
   iPhoneTallHighResSplashScreen: {fileID: 0}
   iPhone47inSplashScreen: {fileID: 0}
@@ -179,7 +179,7 @@ PlayerSettings:
   - m_BuildTarget: iPhone
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 43c9b1bbd724b47619ef9fe7676dfcb7, type: 3}
+      m_Icon: {fileID: 2800000, guid: 582b4b8111ed349c38d0bf28fa174b7c, type: 3}
       m_Width: 180
       m_Height: 180
     - serializedVersion: 2

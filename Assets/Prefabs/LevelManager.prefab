@@ -122,7 +122,7 @@ MonoBehaviour:
   m_playerPrefab: {fileID: 102326, guid: 44d25864aa61440abb1819772dcbb14b, type: 2}
   m_platformManagerPrefab: {fileID: 153968, guid: 611f9c86063104ad5af9d117baa01f1a,
     type: 2}
-  m_effectsManagerPrefab: {fileID: 106826, guid: c78694d483dc24607bfbaadae3c97b90,
+  m_effectsManagerPrefab: {fileID: 151684, guid: 88a34e85e49d14f10ba0396066a32c65,
     type: 2}
   m_playerSpawnTime: 0.5
   m_speedIncGap: 10
@@ -148,6 +148,10 @@ Prefab:
       propertyPath: reverbZoneMixCustomCurve.m_RotationOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_effectsManagerPrefab
+      value: 
+      objectReference: {fileID: 151684, guid: 88a34e85e49d14f10ba0396066a32c65, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 166440}

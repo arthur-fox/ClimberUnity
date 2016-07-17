@@ -78,6 +78,7 @@ public class LevelManager : MonoBehaviour
 		m_effectsManagerEntity = (GameObject)Instantiate (m_effectsManagerPrefab);
 		EffectsManager effectsManager = m_effectsManagerEntity.GetComponent<EffectsManager>();
 		effectsManager.m_gameCameraEntity = m_gameCameraEntity;
+		effectsManager.transform.SetParent(transform);
 
 		m_nextSpeedIncThresh = m_speedIncGap;
 		m_currSpeed = m_initSpeed;

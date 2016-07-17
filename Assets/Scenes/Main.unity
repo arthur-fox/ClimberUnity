@@ -1402,7 +1402,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'I Heart #ClimberGame! =D'
+  m_Text: 'I Heart #ClimberGame =D'
 --- !u!222 &813054778
 CanvasRenderer:
   m_ObjectHideFlags: 0

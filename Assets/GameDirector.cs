@@ -58,7 +58,7 @@ public class GameDirector : MonoBehaviour
 			Destroy (m_currLevelEntity);
 			m_currLevelEntity = null;
 
-			m_twitterMessageText.text = "Just Scored " + m_lastHighScore + " on #ClimberGame";
+			m_twitterMessageText.text = "Just Scored " + m_lastHighScore + " on #ClimberGame!";
 
 			SetMainMenuUI(false);
 			SetHeartPageUI(false);
@@ -95,7 +95,14 @@ public class GameDirector : MonoBehaviour
 
 	public void OnTweetScore()
 	{
-		SoomlaProfile.UpdateStatus(m_twitterProvider, m_twitterMessageText.text, null, null);
+		if (m_gameState == GameState.kHeartPage)
+		{
+			SoomlaProfile.UpdateStatus(m_twitterProvider, m_heartTwitterMessageText.text, null, null);
+		}
+		if (m_gameState == GameState.kPostGame)
+		{
+			SoomlaProfile.UpdateStatus(m_twitterProvider, m_twitterMessageText.text, null, null);
+		}
 
 		OnReturnToMainMenu();
 	}

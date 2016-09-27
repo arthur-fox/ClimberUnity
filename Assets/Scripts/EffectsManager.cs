@@ -63,26 +63,13 @@ public class EffectsManager : MonoBehaviour
 		m_rightTapButton.gameObject.SetActive(false);
 	}
 
-	void Awake()
+	void Start()
 	{
 		m_playerInputState = PlayerInputState.kState1MustPressLeft;
 
 		m_leftTapButton.gameObject.SetActive(true);
 		m_rightTapButton.gameObject.SetActive(false);
 
-		/*
-		Vector3 leftPosition = new Vector3(-1.45f, -0.5f, 0.0f);
-		m_leftTapButton = (GameObject) Instantiate(m_tapButtonPrefab, leftPosition, Quaternion.identity);
-		m_leftTapButton.SetActive(false);
-
-		Vector3 rightPosition = new Vector3(1.45f, -0.5f, 0.0f);
-		m_rightTapButton = (GameObject) Instantiate(m_tapButtonPrefab, rightPosition, Quaternion.identity);
-		m_rightTapButton.SetActive(false);
-		*/
-	}
-
-	void Start()
-	{
 		m_colourCorrection = m_gameCameraEntity.GetComponent<UnityStandardAssets.ImageEffects.ColorCorrectionCurves> ();
 		m_overlay = m_gameCameraEntity.GetComponent<UnityStandardAssets.ImageEffects.ScreenOverlay>();
 	}

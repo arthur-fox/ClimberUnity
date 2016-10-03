@@ -14,6 +14,7 @@ public class GameDirector : MonoBehaviour
 	public Button m_playLevelButton;
 	public Button m_heartButton;
 	public Text m_climberText;
+	public GameObject m_climberCrown; // Added this because I had to call the game Climb King! =P
 
 	// HeartPage UI - Re-using Yes + No buttons from PostGameUI
 	public Text m_heartTwitterMessageText;
@@ -209,6 +210,7 @@ public class GameDirector : MonoBehaviour
 		m_playLevelButton.gameObject.SetActive(enable);
 		m_heartButton.gameObject.SetActive(enable);
 		m_climberText.gameObject.SetActive(enable);
+		m_climberCrown.SetActive(enable);
 
 		m_heartTwitterMessageText.gameObject.SetActive(enable);
 		m_heartTweetSupportText.gameObject.SetActive(enable);
@@ -230,6 +232,7 @@ public class GameDirector : MonoBehaviour
 		m_playLevelButton.gameObject.SetActive(enable);
 		m_heartButton.gameObject.SetActive(enable);
 		m_climberText.gameObject.SetActive(enable);
+		m_climberCrown.SetActive(enable);
 	}
 
 	void SetHeartPageUI(bool enable)

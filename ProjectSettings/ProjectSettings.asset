@@ -11,7 +11,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 0
   companyName: OMA
-  productName: Climber
+  productName: ClimbKing
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenStyle: 0
@@ -183,40 +183,6 @@ PlayerSettings:
       m_Icon: {fileID: 0}
       m_Width: 128
       m_Height: 128
-  - m_BuildTarget: iPhone
-    m_Icons:
-    - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 582b4b8111ed349c38d0bf28fa174b7c, type: 3}
-      m_Width: 180
-      m_Height: 180
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 152
-      m_Height: 152
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 144
-      m_Height: 144
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 120
-      m_Height: 120
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 114
-      m_Height: 114
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 76
-      m_Height: 76
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 72
-      m_Height: 72
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 57
-      m_Height: 57
   m_BuildTargetBatching: []
   m_BuildTargetGraphicsAPIs:
   - m_BuildTarget: WindowsStandaloneSupport

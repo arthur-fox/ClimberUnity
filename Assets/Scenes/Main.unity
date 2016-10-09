@@ -1179,7 +1179,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'I Heart #ClimbKing =D'
+  m_Text: 'I Heart #ClimbKingGame =D'
 --- !u!222 &813054778
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1431,7 +1431,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Just Scored 0 on #ClimbKing!'
+  m_Text: 'Just Scored 0 on #ClimbKingGame!'
 --- !u!222 &1313008961
 CanvasRenderer:
   m_ObjectHideFlags: 0

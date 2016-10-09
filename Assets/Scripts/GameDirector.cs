@@ -57,7 +57,7 @@ public class GameDirector : MonoBehaviour
 			Destroy (m_currLevelEntity);
 			m_currLevelEntity = null;
 
-			m_twitterMessageText.text = "Just Scored " + m_lastHighScore + " on #ClimbKing!";
+			m_twitterMessageText.text = "Just Scored " + m_lastHighScore + " on #ClimbKingGame!";
 
 			SetAllUI(false);
 			SetPostGameUI(true);
